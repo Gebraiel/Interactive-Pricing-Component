@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+  <link rel="stylesheet" href="style.css">
+  <script
+      src="https://kit.fontawesome.com/1a11e246e6.js"
+      crossorigin="anonymous"
+    ></script>
+  <title>Frontend Mentor | Interactive pricing component</title>
+
+  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <style>
+    .attribution { font-size: 11px; text-align: center; }
+    .attribution a { color: hsl(228, 45%, 44%); }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="title">
+      <h1>  Simple, traffic-based pricing
+      </h1>
+      <p>  Sign-up for our 30-day trial. No credit card required. 
+      </p>
+    </div>
+    <div class="container">
+      <div class="slider-container padding-30">
+        <div class="result row">
+          <div class="page-views "><span class="number">100</span>K <span>&nbsp;PAGEVIEWS</span></div>
+          <div class="price row monthly">
+            <b>$<span class="number">16.00</span></b> 
+            <span class="month">
+              &nbsp;/ month
+            </span>
+            <span class="year">
+              / year
+            </span>
+          </div>
+        </div>
+        <div class="slider">
+          <input type="range" max="200" step="10">
+        </div>
+        <div class="toggle-container">
+          <span>Monthly </span>
+          <div class="toggle"><div class="circle"></div></div>
+          <span>Yearly 
+             <span class="discount">-25% <span class="desktop">Discount</span></span></span>
+        </div>
+      </div>
+      <div class="features-container">
+        <div class="padding-30 row">
+          <ul class="features">
+            <li><i class="fa-solid fa-check"></i>Unlimited websites</li>
+            <li>  <i class="fa-solid fa-check"></i>100% data ownership
+            </li>
+            <li> <i class="fa-solid fa-check"></i> Email reports
+            </li>
+          </ul>
+          <button>Start my trial</button>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script>
+    let slider = document.querySelector('.slider input');
+    let maxValue = 200;
+    let price = 0.00016;
+    let toggle = document.querySelector('.toggle');
+    let body = document.querySelector('body');
+    let discount = 0.25;
+    let hasDiscount = false;
+    toggle.addEventListener('click',function(){
+      toggle.classList.toggle('on');
+      let priceContainer = document.querySelector('.price')
+      if(priceContainer.classList.contains('monthly')){
+        priceContainer.classList.remove('monthly');
+        priceContainer.classList.add('yearly');
+        hasDiscount=true;
+      }else{
+        hasDiscount=false;
+        priceContainer.classList.remove('yearly');
+        priceContainer.classList.add('monthly');
+      }
+      changePrice();
+    })
+    slider.addEventListener('input',function(){
+      changePrice();
+    });
+
+
+    function changePrice(){
+      let value =slider.value;
+      let pageViews = value *1000;
+      let progress =Number.parseInt((value/maxValue) *100);
+      let totalPrice = hasDiscount?(pageViews * price)-(pageViews * price*discount):(pageViews*price) ;
+      document.documentElement.style.setProperty('--progress',`${progress}%`);
+      document.querySelector('.page-views .number').textContent=value;
+      document.querySelector('.price b .number').textContent = totalPrice.toFixed(2);
+    }
+  </script>
+
+</body>
+</html>
